@@ -1,1 +1,3 @@
-# Material for Antoine Savine's Computational Finance Lectures at Copenhagen University
+# Slides, code and material for 
+# Antoine Savine's Lectures at Copenhagen University:
+# Computational Finance and Machine Learning in Finance
