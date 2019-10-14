@@ -55,7 +55,10 @@ b3 = np.random.normal(size=(1, 1))
 memory, y = forwardPass(x, W1, b1, W2, b2, W3, b3)
 print ("y = ", y)
 
-dy = np.array([[1.0]])
+target = 1.0
+loss = (y - target) ** 2
+dy = 2 * (y - target)
+
 dx, dW1, db1, dW2, db2, dW3, db3 = backwardPass(y, dy, W1, b1, W2, b2, W3, b3, memory)
 print ("derivs")
 print (dx)

@@ -2,6 +2,8 @@
 import numpy as np
 import tensorflow as tf
 
+tf.logging.set_verbosity(tf.logging.ERROR)
+
 print(tf.__version__)
 print(tf.test.is_gpu_available)
 
@@ -29,7 +31,7 @@ W2 = np.random.normal(size=(3, 3))
 b2 = np.random.normal(size=(3, 1)) 
 W3 = np.random.normal(size=(1, 3))
 b3 = np.random.normal(size=(1, 1))
-target = np.array([[-1.86184893]])
+target = np.array([[1.0]])
 
 x = tf.constant(x)
 W1 = tf.constant(W1)
