@@ -162,11 +162,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AAD.h" />
     <ClInclude Include="interp.h" />
     <ClInclude Include="sobol.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="mrg32k3a.h" />
     <ClInclude Include="toyCode.h" />
+    <ClInclude Include="utility.h" />
     <ClInclude Include="xlframework.h" />
     <ClInclude Include="gaussians.h" />
     <ClInclude Include="matrix.h" />
@@ -176,7 +178,9 @@
     <ClInclude Include="xlOper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AAD.cpp" />
     <ClCompile Include="sobol.cpp" />
+    <ClCompile Include="toyCode.cpp" />
     <ClCompile Include="xlMemoryManager.cpp" />
     <ClCompile Include="xlMemoryPool.cpp" />
     <ClCompile Include="xlcall.cpp" />

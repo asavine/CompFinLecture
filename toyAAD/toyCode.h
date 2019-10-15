@@ -281,17 +281,6 @@ struct Number
 
 };
 
-template <class T> inline T blackScholes(
-    //  input layer 0
-    const T spot, const T rate, const T yield, const T vol, const T strike, const T mat)
-{
-/* layer 1 */        T df = exp(-rate * mat), fwd = spot * exp((rate - yield) * mat), std = vol * sqrt(mat);
-/* layer 2 */        T d = log(fwd / strike) / std;
-/* layer 3 */        T d1 = d + 0.5 * std, d2 = d - 0.5 * std;
-/* layer 4 */        T p1 = normalCdf(d1), p2 = normalCdf(d2);
-/* output layer 5 */ return df * (fwd * p1 - strike * p2);
-}
-
 vector<double> calculateAdjoints(Number& result)
 {
     //  initialization
@@ -319,6 +308,17 @@ vector<double> calculateAdjoints(Number& result)
 /*  ************************************************************************************************ /
                                        Black & Scholes code
 /   *************************************************************************************************/
+
+template <class T> inline T blackScholes(
+    //  input layer 0
+    const T spot, const T rate, const T yield, const T vol, const T strike, const T mat)
+{
+/* layer 1 */        T df = exp(-rate * mat), fwd = spot * exp((rate - yield) * mat), std = vol * sqrt(mat);
+/* layer 2 */        T d = log(fwd / strike) / std;
+/* layer 3 */        T d1 = d + 0.5 * std, d2 = d - 0.5 * std;
+/* layer 4 */        T p1 = normalCdf(d1), p2 = normalCdf(d2);
+/* output layer 5 */ return df * (fwd * p1 - strike * p2);
+}
 
 void blackScholesDiff()
 {
@@ -349,9 +349,9 @@ inline T toyDupireBarrierMc(
     //  Spot
     const T            S0,
     //  Local volatility
-    const vector<T>    spots,
-    const vector<T>    times,
-    const matrix<T>    vols,
+    const vector<T>&   spots,
+    const vector<T>&   times,
+    const matrix<T>&   vols,
     //  Product parameters
     const T            maturity,
     const T            strike,
@@ -399,7 +399,7 @@ inline T toyDupireBarrierMc(
 }
 
 void dupireRisksMiniBatch(
-	const double S0, const vector<double> spots, const vector<double> times, const matrix<double> vols,
+	const double S0, const vector<double>& spots, const vector<double>& times, const matrix<double>& vols,
 	const double maturity, const double strike, const double barrier,
 	const int Np, const int Nt, const double epsilon, RNG& random,
 	/* results: value and dV/dS, dV/d(local vols) */ double& price, double& delta, matrix<double>& vegas)
@@ -432,7 +432,7 @@ void dupireRisksMiniBatch(
 }
 
 void toyDupireBarrierMcRisks(
-	const double S0, const vector<double> spots, const vector<double> times, const matrix<double> vols,
+	const double S0, const vector<double>& spots, const vector<double>& times, const matrix<double>& vols,
 	const double maturity, const double strike, const double barrier,
 	const int Np, const int Nt, const double epsilon, RNG& random,
 	/* results: value and dV/dS, dV/d(local vols) */ double& price, double& delta, matrix<double>& vegas)
@@ -444,7 +444,7 @@ void toyDupireBarrierMcRisks(
 	double batchPrice, batchDelta;
 	matrix<double> batchVegas(vegas.rows(), vegas.cols());
 
-	int pathsToGo = Np, pathsPerBatch = 1024;
+	int pathsToGo = Np, pathsPerBatch = 512;
 	while (pathsToGo > 0)
 	{
 		//	wipe tape

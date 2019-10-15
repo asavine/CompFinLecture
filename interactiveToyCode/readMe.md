@@ -1,2 +1,2 @@
-# AAD code from the slides 
-# Wrapped in a VS17 project and export to excel
+# Code for the interactive coding session
+# at the end of the lecture

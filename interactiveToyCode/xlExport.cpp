@@ -114,6 +114,49 @@ double xToyDupireBarrierMc(
 }
 
 extern "C" __declspec(dllexport)
+double xToyDupireBarrierMcV2(
+    double              spot,
+    FP12*               spots,
+    FP12*               times,
+    FP12*               vols,
+    double              mat,
+    double              strike,
+    double              barrier,
+    double              monitoring,
+    double              batches,
+    double              paths,
+    double              maxDt,
+    double              epsilon,
+    double              useSobol,
+    double              seed1,
+    double              seed2)
+{
+    FreeAllTempMemory();
+
+    //  Make sure we have paths and steps
+    if (paths <= 0.0 || monitoring <= 0.0 || maxDt <= 0.0) return -1;
+
+    //  Unpack
+
+    if (spots->rows * spots->columns * times->rows * times->columns != vols->rows * vols->columns)
+    {
+        return -1;
+    }
+
+    vector<double> vspots = to_vector(spots);
+    vector<double> vtimes = to_vector(times);
+    matrix<double> vvols = to_matrix(vols);
+
+    //  Random Number Generator
+    unique_ptr<RNG> rng;
+    if (useSobol > 0.5) rng = make_unique<Sobol>();
+    else rng = make_unique<mrg32k3a>(seed1 > 0.5 ? int(seed1): 12345, seed2 > 0.5? int(seed2): 123456);
+
+    //  Call and return
+    return toyDupireBarrierMcV2(spot, vspots, vtimes, vvols, mat, strike, barrier, monitoring, int (batches), int(paths), maxDt, 100*epsilon, *rng);
+}
+
+extern "C" __declspec(dllexport)
 LPXLOPER12 xToyDupireBarrierMcRisks(
     //  model parameters
     double              spot,
@@ -173,6 +216,65 @@ LPXLOPER12 xToyDupireBarrierMcRisks(
 	return results;
 }
 
+extern "C" __declspec(dllexport)
+LPXLOPER12 xToyDupireBarrierMcRisksV2(
+    double              spot,
+    FP12*               spots,
+    FP12*               times,
+    FP12*               vols,
+    double              mat,
+    double              strike,
+    double              barrier,
+    double              monitoring,
+    double              batches,
+    double              paths,
+    double              maxDt,
+    double              epsilon,
+    double              useSobol,
+    double              seed1,
+    double              seed2)
+{
+    FreeAllTempMemory();
+
+    //  Make sure we have paths and steps
+    if (paths <= 0.0 || monitoring <= 0.0 || maxDt <= 0.0) return TempErr12(xlerrNA);
+
+    //  Unpack
+
+    if (spots->rows * spots->columns * times->rows * times->columns != vols->rows * vols->columns)
+    {
+        return TempErr12(xlerrNA);
+    }
+
+    vector<double> vspots = to_vector(spots);
+    vector<double> vtimes = to_vector(times);
+    matrix<double> vvols = to_matrix(vols);
+
+    //  Random Number Generator
+    unique_ptr<RNG> rng;
+    if (useSobol > 0.5) rng = make_unique<Sobol>();
+    else rng = make_unique<mrg32k3a>(seed1 > 0.5 ? int(seed1): 12345, seed2 > 0.5? int(seed2): 123456);
+
+    //  Call 
+	double price, delta;
+	matrix<double> vegas(vvols.rows(), vvols.cols());
+    toyDupireBarrierMcRisksV2(spot, vspots, vtimes, vvols, mat, strike, barrier, monitoring, int(batches), int(paths), maxDt, 100*epsilon, *rng,
+		price, delta, vegas);
+
+	//	Pack and return
+	LPXLOPER12 results = TempXLOPER12();
+	resize(results, 2 + vegas.rows()*vegas.cols(), 1);
+	setNum(results, price, 0, 0);
+	setNum(results, delta, 1, 0);
+	size_t r = 2;
+	for (int i=0; i<vegas.rows(); ++i) for (int j=0; j<vegas.cols(); ++j)
+	{
+		setNum(results, vegas[i][j], r, 0);
+		++r;
+	}
+
+	return results;
+}
 
 //	Registers
 
@@ -195,10 +297,34 @@ extern "C" __declspec(dllexport) int xlAutoOpen(void)
         (LPXLOPER12)TempStr12(L""));
 
     Excel12f(xlfRegister, 0, 11, (LPXLOPER12)&xDLL,
+        (LPXLOPER12)TempStr12(L"xToyDupireBarrierMcV2"),
+        (LPXLOPER12)TempStr12(L"BBK%K%K%BBBBBBBBBBB"),
+        (LPXLOPER12)TempStr12(L"xToyDupireBarrierMcV2"),
+        (LPXLOPER12)TempStr12(L"spot, spots, times, vols, mat, strike, barrier, monitoring, batches, paths, maxDt, epsilon, useSobol, [seed1], [seed2]"),
+        (LPXLOPER12)TempStr12(L"1"),
+        (LPXLOPER12)TempStr12(L"myOwnCppFunctions"),
+        (LPXLOPER12)TempStr12(L""),
+        (LPXLOPER12)TempStr12(L""),
+        (LPXLOPER12)TempStr12(L"Toy Dupire Barrier MC - V2"),
+        (LPXLOPER12)TempStr12(L""));
+
+    Excel12f(xlfRegister, 0, 11, (LPXLOPER12)&xDLL,
         (LPXLOPER12)TempStr12(L"xToyDupireBarrierMcRisks"),
         (LPXLOPER12)TempStr12(L"QBK%K%K%BBBBBBBBB"),
         (LPXLOPER12)TempStr12(L"xToyDupireBarrierMcRisks"),
         (LPXLOPER12)TempStr12(L"spot, spots, times, vols, mat, strike, barrier, paths, steps, epsilon, useSobol, [seed1], [seed2]"),
+        (LPXLOPER12)TempStr12(L"1"),
+        (LPXLOPER12)TempStr12(L"myOwnCppFunctions"),
+        (LPXLOPER12)TempStr12(L""),
+        (LPXLOPER12)TempStr12(L""),
+        (LPXLOPER12)TempStr12(L"Toy Dupire Barrier MC AAD risks"),
+        (LPXLOPER12)TempStr12(L""));
+
+    Excel12f(xlfRegister, 0, 11, (LPXLOPER12)&xDLL,
+        (LPXLOPER12)TempStr12(L"xToyDupireBarrierMcRisksV2"),
+        (LPXLOPER12)TempStr12(L"QBK%K%K%BBBBBBBBBBB"),
+        (LPXLOPER12)TempStr12(L"xToyDupireBarrierMcRisksV2"),
+        (LPXLOPER12)TempStr12(L"spot, spots, times, vols, mat, strike, barrier, monitoring, batches, paths, maxDt, epsilon, useSobol, [seed1], [seed2]"),
         (LPXLOPER12)TempStr12(L"1"),
         (LPXLOPER12)TempStr12(L"myOwnCppFunctions"),
         (LPXLOPER12)TempStr12(L""),
