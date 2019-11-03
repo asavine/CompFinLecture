@@ -8,7 +8,6 @@ at Copenhagen University and Kings College London:
 
 ![Screenshot](CompFinTitle.png)
 
-See video recordings (Kings College London) here: 
-https://www.youtube.com/playlist?list=PLBYkl4gMb_IVIxTpbqae80e08kX-Ajy2P
+See video recordings (Kings College London) below:
 
-<p align="center"> [![IMAGE ALT TEXT HERE](https://i.ytimg.com/vi/YGwKxms-bfU/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLARODj7GGqqcyLcKzAtlAL3ZuRlBg)](https://www.youtube.com/playlist?list=PLBYkl4gMb_IVIxTpbqae80e08kX-Ajy2P) </p>
+[![IMAGE ALT TEXT HERE](https://i.ytimg.com/vi/YGwKxms-bfU/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLARODj7GGqqcyLcKzAtlAL3ZuRlBg)](https://www.youtube.com/playlist?list=PLBYkl4gMb_IVIxTpbqae80e08kX-Ajy2P)
