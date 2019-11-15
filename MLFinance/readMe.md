@@ -1,9 +1,9 @@
 # Machine Learning in Finance:
 # Python -- TensorFlow 1.x notebooks
 
-Notebook 1: Deep Learning Black & Scholes [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/asavine/CompFinLecture/blob/master/MLFinance/BlackScholesCall.ipynb)
+Notebook 1 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/asavine/CompFinLecture/blob/master/MLFinance/BlackScholesCall.ipynb) Deep Learning Black & Scholes 
 
-Notebook 2: Deep Learning Basket Options [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/asavine/CompFinLecture/blob/master/MLFinance/BachelierBasket.ipynb)
+Notebook 2: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/asavine/CompFinLecture/blob/master/MLFinance/BachelierBasket.ipynb) Deep Learning Basket Options 
 
 ![Screenshot](anim.gif)
 
