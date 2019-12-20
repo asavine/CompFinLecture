@@ -12,4 +12,4 @@ See video recordings (Kings College London) here: [![IMAGE ALT TEXT HERE](https:
 
 Or the quick introduction, recorded in Bloomberg offices in London for the Tech Talks event of November 2019 here: AAD and backpropagation in Machine Learning and Finance, introduced in 15 minutes:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IcQkwgPwfm4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[iframe width="560" height="315" src="https://www.youtube.com/embed/IcQkwgPwfm4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>]
